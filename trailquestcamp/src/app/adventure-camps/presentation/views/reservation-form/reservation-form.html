@@ -1,0 +1,58 @@
+<section aria-labelledby="new-reservation-title">
+  <h1 id="new-reservation-title" class="title">{{ 'reservation-new-title' | translate }}</h1>
+  <h2 class="subtitle">{{ 'reservation-new-subtitle' | translate }}</h2>
+  <form [formGroup]="form" (ngSubmit)="submit()" novalidate>
+    <mat-form-field>
+      <mat-label>{{ 'reservation-activity-type' | translate }}</mat-label>
+      <mat-select formControlName="activityType" required>
+        @for (type of activityTypes; track type) {
+          <mat-option [value]="type">{{ 'activity-' + type | translate }}</mat-option>
+        }
+      </mat-select>
+      @if (form.controls.activityType.hasError('required')) {
+        <mat-error>{{ 'reservation-activity-type-required' | translate }}</mat-error>
+      }
+    </mat-form-field>
+
+    <p class="weather" aria-live="polite">
+      @if (weatherLoading()) { {{ 'reservation-weather-loading' | translate }} }
+      @else if (temperature() !== null) { {{ 'reservation-temperature' | translate }}: <strong>{{ temperature() }} °C</strong> }
+      @else if (selectedCamp()) { {{ 'reservation-weather-unavailable' | translate }} }
+    </p>
+    @if (weatherError()) {
+      <p class="error" role="alert">{{ 'error-load-weather' | translate }}</p>
+    }
+
+    <mat-form-field>
+      <mat-label>{{ 'reservation-participant-name' | translate }}</mat-label>
+      <input matInput formControlName="participantName" required>
+      @if (form.controls.participantName.hasError('required') || form.controls.participantName.hasError('blank')) {
+        <mat-error>{{ 'reservation-participant-name-required' | translate }}</mat-error>
+      }
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>{{ 'reservation-participants' | translate }}</mat-label>
+      <input matInput type="number" formControlName="participants" required min="1">
+      @if (selectedCamp()) {
+        <mat-hint>{{ 'adventure-camp-available-capacity' | translate }}: {{ availableCapacity() }}</mat-hint>
+      }
+      @if (form.controls.participants.hasError('required') || form.controls.participants.hasError('min')) {
+        <mat-error>{{ 'reservation-participants-invalid' | translate }}</mat-error>
+      } @else if (form.controls.participants.hasError('capacity')) {
+        <mat-error>{{ 'error-capacity-exceeded' | translate }}</mat-error>
+      }
+    </mat-form-field>
+
+    @if (store.error()) {
+      <p class="error" role="alert">{{ store.error() | translate }}</p>
+    }
+
+    <div class="actions">
+      <button mat-raised-button type="submit" [disabled]="form.invalid || temperature() === null || store.loading()">
+        {{ 'common-create' | translate }}
+      </button>
+      <button mat-button type="button" (click)="cancel()">{{ 'common-cancel' | translate }}</button>
+    </div>
+  </form>
+</section>
