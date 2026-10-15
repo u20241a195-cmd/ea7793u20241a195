@@ -1,0 +1,37 @@
+<mat-toolbar class="toolbar" color="primary" role="banner">
+  <button mat-icon-button (click)="toggleMenu()" [attr.aria-label]="'layout-toggle-navigation' | translate">
+    <mat-icon>menu</mat-icon>
+  </button>
+  <img class="logo" src="assets/logo.svg" [alt]="'layout-logo-alt' | translate" width="40" height="40">
+  <span class="brand">{{ 'layout-brand' | translate }}</span>
+  <span class="toolbar-spacer"></span>
+  <mat-button-toggle-group
+    [value]="currentLanguage()"
+    (change)="switchLanguage($event.value)"
+    [attr.aria-label]="'layout-language-switcher' | translate">
+    <mat-button-toggle value="en">EN</mat-button-toggle>
+    <mat-button-toggle value="es">ES</mat-button-toggle>
+  </mat-button-toggle-group>
+</mat-toolbar>
+
+<mat-sidenav-container class="layout-container" autosize>
+  <mat-sidenav mode="side" opened [class.collapsed]="collapsed()" class="sidenav">
+    <mat-nav-list [attr.aria-label]="'layout-main-navigation' | translate">
+      @for (option of options; track option.link) {
+        <a mat-list-item [routerLink]="option.link" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
+          <mat-icon matListItemIcon>{{ option.icon }}</mat-icon>
+          @if (!collapsed()) {
+            <span matListItemTitle>{{ option.label | translate }}</span>
+          }
+        </a>
+      }
+    </mat-nav-list>
+  </mat-sidenav>
+
+  <mat-sidenav-content class="content-shell">
+    <main class="page-content">
+      <router-outlet/>
+    </main>
+    <app-footer-content/>
+  </mat-sidenav-content>
+</mat-sidenav-container>

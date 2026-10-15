@@ -1,0 +1,9 @@
+.toolbar { display: flex; align-items: center; gap: 12px; }
+.toolbar-spacer { flex: 1 1 auto; }
+.brand { font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.layout-container { min-height: calc(100vh - 64px); }
+.sidenav { width: 230px; transition: width 180ms ease; }
+.sidenav.collapsed { width: 72px; }
+.active { background: var(--mat-sys-secondary-container); }
+.content-shell { min-height: 100%; display: flex; flex-direction: column; }
+.page-content { flex: 1; padding: 24px; }
