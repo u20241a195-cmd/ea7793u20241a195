@@ -1,0 +1,24 @@
+<mat-card class="summary-card" appearance="outlined">
+  <mat-card-header>
+    <mat-card-title>{{ summary().adventureCamp.name }}</mat-card-title>
+    <mat-card-subtitle>{{ 'activity-' + summary().adventureCamp.activityType | translate }}</mat-card-subtitle>
+  </mat-card-header>
+  <mat-card-content>
+    @if (summary().reservations.length === 0) {
+      <p>{{ 'adventure-camp-empty' | translate }}</p>
+    } @else {
+      <ul class="reservation-list">
+        @for (reservation of summary().reservations; track reservation.id) {
+          <li>
+            <span>{{ reservation.participantName }}</span>
+            <span>{{ reservation.participants }}</span>
+          </li>
+        }
+      </ul>
+    }
+  </mat-card-content>
+  <mat-card-footer class="indicators">
+    <span>{{ 'adventure-camp-total-participants' | translate }}: <strong>{{ summary().totalParticipants }}</strong></span>
+    <span>{{ 'adventure-camp-available-capacity' | translate }}: <strong>{{ summary().availableCapacity }}</strong></span>
+  </mat-card-footer>
+</mat-card>
