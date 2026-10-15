@@ -1,0 +1,15 @@
+<section class="home" aria-labelledby="home-title">
+  <h1 id="home-title">{{ 'home-title' | translate }}</h1>
+  <p>{{ 'home-welcome' | translate }}</p>
+
+  <h2 id="my-adventure-camps-title">{{ 'home-my-adventure-camps' | translate }}</h2>
+  @if (store.loading()) { <mat-spinner diameter="32" [attr.aria-label]="'common-loading' | translate"/> }
+  @if (store.error()) { <p class="error" role="alert">{{ store.error() | translate }}</p> }
+  <mat-grid-list cols="2" rowHeight="300px" gutterSize="16px" aria-labelledby="my-adventure-camps-title">
+    @for (summary of store.adventureCampSummaries(); track summary.adventureCamp.id) {
+      <mat-grid-tile>
+        <app-adventure-camp-summary class="tile" [summary]="summary"/>
+      </mat-grid-tile>
+    }
+  </mat-grid-list>
+</section>
